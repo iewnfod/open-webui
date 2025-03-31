@@ -11,7 +11,7 @@ import os
 from datetime import UTC, datetime, timedelta
 from typing import Optional, Union, List, Dict
 
-from open_webui.models.users import Users
+from open_webui.models.users import User, UserModel, Users
 
 from open_webui.constants import ERROR_MESSAGES
 from open_webui.env import (
@@ -230,12 +230,29 @@ def get_current_user_by_api_key(api_key: str):
     return user
 
 
+def check_user_expired(user: UserModel) -> bool:
+    if user.activate_time == -1:
+        return True
+    return datetime.fromtimestamp(user.activate_time).timestamp() + user.valid_time < datetime.now().timestamp()
+
+
 def get_verified_user(user=Depends(get_current_user)):
     if user.role not in {"user", "admin"}:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=ERROR_MESSAGES.ACCESS_PROHIBITED,
         )
+    if user.role != "admin":
+        if user.banned == True:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail=ERROR_MESSAGES.BANNED_ACCOUNT,
+            )
+        if check_user_expired(user):
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail=ERROR_MESSAGES.EXPIRED_ACCOUNT,
+            )
     return user
 
 

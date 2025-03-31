@@ -55,6 +55,8 @@ class ERROR_MESSAGES(str, Enum):
     ACTION_PROHIBITED = (
         "The requested action has been restricted as a security measure."
     )
+    BANNED_ACCOUNT = "Your account has been disabled. Please contact your administrator for assitance."
+    EXPIRED_ACCOUNT = "Your account has expired. Please contact your administrator for assitance."
 
     FILE_NOT_SENT = "FILE_NOT_SENT"
     FILE_NOT_SUPPORTED = "Oops! It seems like the file format you're trying to upload is not supported. Please upload a file with a supported format and try again."

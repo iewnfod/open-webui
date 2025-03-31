@@ -9,7 +9,7 @@ from open_webui.models.groups import Groups
 
 
 from pydantic import BaseModel, ConfigDict
-from sqlalchemy import BigInteger, Column, String, Text
+from sqlalchemy import BigInteger, Boolean, Column, String, Text
 
 ####################
 # User DB Schema
@@ -28,6 +28,11 @@ class User(Base):
     last_active_at = Column(BigInteger)
     updated_at = Column(BigInteger)
     created_at = Column(BigInteger)
+
+    banned = Column(Boolean)
+    remain_token = Column(BigInteger)
+    activate_time = Column(BigInteger)
+    valid_time = Column(BigInteger)
 
     api_key = Column(String, nullable=True, unique=True)
     settings = Column(JSONField, nullable=True)
@@ -58,6 +63,11 @@ class UserModel(BaseModel):
     info: Optional[dict] = None
 
     oauth_sub: Optional[str] = None
+
+    banned: bool
+    remain_token: int
+    activate_time: int
+    valid_time: int
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -116,6 +126,10 @@ class UsersTable:
                     "created_at": int(time.time()),
                     "updated_at": int(time.time()),
                     "oauth_sub": oauth_sub,
+                    "banned": False,
+                    "remain_token": 0,
+                    "activate_time": int(time.time()),
+                    "valid_time": 0,
                 }
             )
             result = User(**user.model_dump())
