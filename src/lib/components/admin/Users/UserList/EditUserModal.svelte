@@ -21,10 +21,15 @@
 		profile_image_url: '',
 		name: '',
 		email: '',
-		password: ''
+		password: '',
+		remain_token: 0,
+		expire_at: '',
+		activate_time: 0,
+		valid_time: 0
 	};
 
 	const submitHandler = async () => {
+		_user.valid_time = (dayjs(_user.expire_at).valueOf() - _user.activate_time * 1000) / 1000;
 		const res = await updateUserById(localStorage.token, selectedUser.id, _user).catch((error) => {
 			toast.error(`${error}`);
 		});
@@ -39,6 +44,7 @@
 		if (selectedUser) {
 			_user = selectedUser;
 			_user.password = '';
+			_user.expire_at = dayjs((selectedUser.activate_time + selectedUser.valid_time) * 1000).format('YYYY-MM-DD');
 		}
 	});
 </script>
@@ -135,6 +141,30 @@
 									type="password"
 									bind:value={_user.password}
 									autocomplete="new-password"
+								/>
+							</div>
+						</div>
+
+						<div class="flex flex-col w-full">
+							<div class=" mb-1 text-xs text-gray-500">{$i18n.t('Remain Tokens')}</div>
+
+							<div class="flex-1">
+								<input
+									class="w-full rounded-sm py-2 px-4 text-sm dark:text-gray-300 dark:bg-gray-800 outline-hidden"
+									type="number"
+									bind:value={_user.remain_token}
+								/>
+							</div>
+						</div>
+
+						<div class="flex flex-col w-full">
+							<div class=" mb-1 text-xs text-gray-500">{$i18n.t('Expire Date')}</div>
+
+							<div class="flex-1">
+								<input
+									class="w-full rounded-sm py-2 px-4 text-sm dark:text-gray-300 dark:bg-gray-800 outline-hidden"
+									type="date"
+									bind:value={_user.expire_at}
 								/>
 							</div>
 						</div>

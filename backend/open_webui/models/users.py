@@ -102,6 +102,8 @@ class UserUpdateForm(BaseModel):
     email: str
     profile_image_url: str
     password: Optional[str] = None
+    activate_time: int
+    valid_time: int
 
 
 class UsersTable:

@@ -12,6 +12,7 @@
 	import Plus from '$lib/components/icons/Plus.svelte';
 	import Tooltip from '$lib/components/common/Tooltip.svelte';
 	import SensitiveInput from '$lib/components/common/SensitiveInput.svelte';
+	import dayjs from 'dayjs';
 
 	const i18n = getContext('i18n');
 
@@ -241,6 +242,20 @@
 							bind:value={name}
 							required
 						/>
+					</div>
+				</div>
+			</div>
+
+			<div class="pt-0.5">
+				<div class="flex flex-col w-full">
+					<div class=" mb-1 text-xs font-medium">{$i18n.t('Expire Date')}</div>
+
+					<div class="flex-1">
+						<div
+							class="w-full rounded-lg py-2 px-4 text-sm dark:text-gray-300 dark:bg-gray-850 outline-hidden"
+						>
+							{dayjs(($user.activate_time + $user.valid_time) * 1000).format('LL')}
+						</div>
 					</div>
 				</div>
 			</div>

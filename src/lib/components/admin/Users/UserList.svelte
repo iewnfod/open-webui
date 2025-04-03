@@ -307,16 +307,27 @@
 						{/if}
 					</div>
 				</th>
+
 				<th
 					scope="col"
 					class="px-3 py-1.5 cursor-pointer select-none"
-					on:click={() => setSortKey('created_at')}
 				>
 					<div class="flex gap-1.5 items-center">
-						{$i18n.t('Created at')}
-						{#if sortKey === 'created_at'}
+						{$i18n.t('Expire Date')}
+					</div>
+				</th>
+
+				<th
+					scope="col"
+					class="px-3 py-1.5 cursor-pointer select-none"
+					on:click={() => setSortKey('remain_token')}
+				>
+					<div class="flex gap-1.5 items-center">
+						{$i18n.t('Remain Tokens')}
+
+						{#if sortKey === 'remain_token'}
 							<span class="font-normal"
-								>{#if sortOrder === 'asc'}
+							>{#if sortOrder === 'asc'}
 									<ChevronUp className="size-2" />
 								{:else}
 									<ChevronDown className="size-2" />
@@ -401,7 +412,11 @@
 					</td>
 
 					<td class=" px-3 py-1">
-						{dayjs(user.created_at * 1000).format('LL')}
+						{dayjs((user.activate_time + user.valid_time) * 1000).format('LL')}
+					</td>
+
+					<td class=" px-3 py-1">
+						{user.remain_token}
 					</td>
 
 					<td class=" px-3 py-1"> {user.oauth_sub ?? ''} </td>

@@ -53,6 +53,8 @@ class UserResponse(BaseModel):
     name: str
     role: str
     profile_image_url: str
+    activate_time: int
+    valid_time: int
 
 
 class SigninResponse(Token, UserResponse):

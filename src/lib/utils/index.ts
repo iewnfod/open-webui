@@ -1070,3 +1070,8 @@ export const getLineCount = (text) => {
 	console.log(typeof text);
 	return text ? text.split('\n').length : 0;
 };
+
+export const isExpired = (user) => {
+	const now = new Date().valueOf();
+	return now > (user.activate_time + user.valid_time) * 1000;
+}

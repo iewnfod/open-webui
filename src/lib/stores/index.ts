@@ -230,4 +230,6 @@ type SessionUser = {
 	name: string;
 	role: string;
 	profile_image_url: string;
+	activate_time: number;
+	valid_time: number;
 };

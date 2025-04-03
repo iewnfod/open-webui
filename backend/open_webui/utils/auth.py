@@ -248,11 +248,6 @@ def get_verified_user(user=Depends(get_current_user)):
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail=ERROR_MESSAGES.BANNED_ACCOUNT,
             )
-        if check_user_expired(user):
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail=ERROR_MESSAGES.EXPIRED_ACCOUNT,
-            )
     return user
 
 

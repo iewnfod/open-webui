@@ -58,6 +58,8 @@
 	import ChannelItem from './Sidebar/ChannelItem.svelte';
 	import PencilSquare from '../icons/PencilSquare.svelte';
 	import Home from '../icons/Home.svelte';
+	import dayjs from 'dayjs';
+	import { isExpired } from '$lib/utils';
 
 	const BREAKPOINT = 768;
 
@@ -898,14 +900,21 @@
 								showDropdown = !showDropdown;
 							}}
 						>
-							<div class=" self-center mr-3">
+							<div class="flex flex-row w-full items-center justify-start gap-3">
 								<img
 									src={$user.profile_image_url}
 									class=" max-w-[30px] object-cover rounded-full"
 									alt="User profile"
 								/>
+								<div class="flex flex-col justify-center items-start">
+									<div class=" font-medium text-base">{$user.name}</div>
+									{#if isExpired(user)}
+										<div class=" font-light text-sx caret-orange-600">{$i18n.t('Expired')}</div>
+									{:else}
+										<div class=" font-light text-xs">{$i18n.t('Expire Date')}: {dayjs(($user.activate_time + $user.valid_time) * 1000).format('LL')}</div>
+									{/if}
+								</div>
 							</div>
-							<div class=" self-center font-medium">{$user.name}</div>
 						</button>
 					</UserMenu>
 				{/if}
